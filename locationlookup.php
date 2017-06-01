@@ -72,7 +72,8 @@ class Location_Lookup {
         echo '<h1>Location Lookup</h1><hr>';
 //        echo ''.$this->ipinfo_example();
 //        echo ''.$this->census_gov_example();
-        echo ''.$this->google_coordinate_conversion();
+//        echo ''.$this->google_coordinate_conversion();
+        echo ''.$this->kml_parse_example();
     }
 
     public function ipinfo_example () {
@@ -251,9 +252,9 @@ class Location_Lookup {
 
             $details = json_decode(file_get_contents($address));
 
-//            print '<pre>';
-//            print_r($details);
-//            print '</pre>';
+            print '<pre>';
+            print_r($details);
+            print '</pre>';
 
             print '<a target="_blank" href="https://www.google.com/maps/place/';
             print_r($details->results[0]->geometry->location->lat);
@@ -278,7 +279,34 @@ class Location_Lookup {
         }
     }
 
+    public function kml_parse_example () {
+        echo '<h3>KML Parse Example</h3>';
 
+        echo 'Loads File from Directory: ' . plugin_dir_path(__FILE__). 'cb_2015_08_tract_500k.kml <br><br><br>';
+
+        // Loads the XML file
+        if (file_exists(plugin_dir_path(__FILE__). 'cb_2015_08_tract_500k.kml')) {
+
+            $kml_object = simplexml_load_file( plugin_dir_path(__FILE__). 'cb_2015_08_tract_500k.kml');
+
+//            print '<pre>'; print_r($kml_object->Document->Folder->Placemark[34]); print '</pre>';
+//            print '<pre>'; print_r($kml_object); print '</pre>';
+
+            foreach ($kml_object->Document->Folder->Placemark as $mark) {
+                print $mark->ExtendedData->SchemaData->SimpleData[2] . '<br>';
+                print $mark->Polygon->outerBoundaryIs->LinearRing->coordinates . '<br><br>';
+            }
+
+        } else {
+
+            print plugin_dir_path(__FILE__). 'cb_2015_08_tract_500k.kml';
+            echo 'File does not exist';
+
+        }
+
+
+
+    }
 
 }
 
