@@ -202,13 +202,15 @@ class Location_Lookup {
                 } elseif ($tract_size > 100000000) {
                     $zoom = 10;
                 } elseif ($tract_size > 50000000) {
-                    $zoom = 12;
+                    $zoom = 11;
                 } elseif ($tract_size > 10000000) {
+                    $zoom = 12;
+                } elseif ($tract_size > 5000000) {
                     $zoom = 13;
                 } else {
                     $zoom = 14;
                 }
-
+//                print '<pre>'; print_r($tract_details); print '</pre>';
                 print ', so we found that <strong>' . $tract_geoid . '</strong> is your tract number.<br><br>';
             } else {
                 wp_die('Yikes. Couldn\'t find that address. Might be our bad. Can you try it again?');
@@ -283,7 +285,7 @@ class Location_Lookup {
                 function initMap() {
                     var map = new google.maps.Map(document.getElementById('map'), {
                         zoom: <?php print $zoom; ?>,
-                        center: {lng: <?php print $tract_lng; ?>, lat: <?php print $tract_lat; ?>},
+                        center: {lng: <?php print $g_lng; ?>, lat: <?php print $g_lat; ?>},
                         mapTypeId: 'terrain'
                     });
 
